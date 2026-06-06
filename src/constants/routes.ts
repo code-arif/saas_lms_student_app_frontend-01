@@ -1,0 +1,15 @@
+export const ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  FORGOT_PASSWORD: '/forgot-password',
+  DASHBOARD: '/dashboard',
+  COURSES: '/courses',
+  COURSE_DETAIL: (uuid: string) => `/courses/${uuid}`,
+  MY_COURSES: '/my-courses',
+  LEARN: (enrollmentUuid: string, lessonUuid: string) => `/learn/${enrollmentUuid}/${lessonUuid}`,
+  QUIZ: (uuid: string) => `/quiz/${uuid}`,
+  ASSIGNMENTS: (uuid: string) => `/assignments/${uuid}`,
+  CERTIFICATES: '/certificates',
+  PROFILE: '/profile',
+};
