@@ -7,7 +7,7 @@ export const authService = {
     return api.post<ApiResponse<AuthResponse>>('/auth/login', credentials).then(res => res.data);
   },
   register: async (credentials: RegisterCredentials) => {
-    return api.post<ApiResponse<AuthResponse>>('/auth/register', credentials).then(res => res.data);
+    return api.post<ApiResponse<AuthResponse>>('/auth/student/register', credentials).then(res => res.data);
   },
   logout: async () => {
     return api.post('/auth/logout');

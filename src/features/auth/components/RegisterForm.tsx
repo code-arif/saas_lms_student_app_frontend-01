@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { RegisterCredentials } from '../types/auth.types';
 import { Button } from '@/components/ui/button';
@@ -31,6 +33,7 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export const RegisterForm = () => {
   const { register, isRegistering } = useAuth();
+  const [showPasswords, setShowPasswords] = useState(false);
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -40,6 +43,9 @@ export const RegisterForm = () => {
       password_confirmation: '',
     },
   });
+
+  const passwordType = showPasswords ? 'text' : 'password';
+  const toggleShowPasswords = () => setShowPasswords((prev) => !prev);
 
   const onSubmit = (data: RegisterFormValues) => {
     // Only send the fields expected by RegisterCredentials
@@ -91,7 +97,24 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
+                    <div className="relative">
+                      <Input
+                        type={passwordType}
+                        placeholder="••••••••"
+                        className="pr-10"
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="absolute inset-y-0 right-1.5 z-10 rounded-md border-none bg-transparent text-muted-foreground hover:bg-muted"
+                        onClick={toggleShowPasswords}
+                        aria-label={showPasswords ? 'Hide password' : 'Show password'}
+                      >
+                        {showPasswords ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,7 +127,24 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="••••••••" {...field} />
+                    <div className="relative">
+                      <Input
+                        type={passwordType}
+                        placeholder="••••••••"
+                        className="pr-10"
+                        {...field}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="absolute inset-y-0 right-1.5 z-10 rounded-md border-none bg-transparent text-muted-foreground hover:bg-muted"
+                        onClick={toggleShowPasswords}
+                        aria-label={showPasswords ? 'Hide password' : 'Show password'}
+                      >
+                        {showPasswords ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
