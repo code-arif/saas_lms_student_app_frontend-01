@@ -44,7 +44,7 @@ export const QuizPlayer = ({ quiz, onComplete }: QuizPlayerProps) => {
       { uuid: quiz.uuid, answers },
       {
         onSuccess: (response) => {
-          onComplete(response.data);
+          onComplete(response);
         },
       }
     );

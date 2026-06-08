@@ -1,7 +1,6 @@
-"use client"
-
 import * as React from "react"
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
+import { Slot } from "@radix-ui/react-slot"
 
 import { cn } from "@/utils/cn"
 import { Button } from "@/components/ui/button"
@@ -11,8 +10,9 @@ function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
-function SheetTrigger({ ...props }: SheetPrimitive.Trigger.Props) {
-  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
+function SheetTrigger({ asChild, ...props }: SheetPrimitive.Trigger.Props & { asChild?: boolean }) {
+  const Comp = asChild ? Slot : SheetPrimitive.Trigger
+  return <Comp data-slot="sheet-trigger" {...(props as any)} />
 }
 
 function SheetClose({ ...props }: SheetPrimitive.Close.Props) {

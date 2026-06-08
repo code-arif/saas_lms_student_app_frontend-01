@@ -11,11 +11,10 @@ const QuizPage = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState<any>(null);
   
-  const { data: quizResponse, isLoading } = useQuiz(quizUuid!);
+  const { data: quiz, isLoading } = useQuiz(quizUuid!);
 
   if (isLoading) return <LoadingSpinner className="h-20 w-20" />;
 
-  const quiz = quizResponse?.data;
   if (!quiz) return <div>Quiz not found.</div>;
 
   const handleComplete = (resultData: any) => {

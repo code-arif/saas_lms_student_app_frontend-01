@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { Award } from 'lucide-react';
 
 const CertificatesPage = () => {
-  const { data: certsResponse, isLoading } = useCertificates();
+  const { data: certificates, isLoading } = useCertificates();
 
   return (
     <div className="space-y-8">
@@ -22,9 +22,9 @@ const CertificatesPage = () => {
             <div key={i} className="aspect-[1.414/1] rounded-lg bg-muted animate-pulse" />
           ))}
         </div>
-      ) : certsResponse?.data && certsResponse.data.length > 0 ? (
+      ) : certificates && certificates.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {certsResponse.data.map((cert) => (
+          {certificates.map((cert) => (
             <CertificateCard key={cert.uuid} certificate={cert} />
           ))}
         </div>

@@ -12,13 +12,13 @@ export interface DashboardStats {
 export const useDashboardStats = () => {
   return useQuery({
     queryKey: ['dashboard-stats'],
-    queryFn: () => api.get<ApiResponse<DashboardStats>>('/dashboard/stats'),
+    queryFn: () => api.get<ApiResponse<DashboardStats>>('/dashboard/stats').then(res => res.data),
   });
 };
 
 export const useRecentCourses = () => {
   return useQuery({
     queryKey: ['recent-courses'],
-    queryFn: () => api.get<ApiResponse<any[]>>('/dashboard/recent-courses'),
+    queryFn: () => api.get<ApiResponse<any[]>>('/dashboard/recent-courses').then(res => res.data),
   });
 };

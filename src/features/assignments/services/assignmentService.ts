@@ -24,15 +24,15 @@ export interface AssignmentSubmission {
 
 export const assignmentService = {
   getAssignment: (uuid: string) =>
-    api.get<ApiResponse<Assignment>>(`/assignments/${uuid}`),
+    api.get<ApiResponse<Assignment>>(`/assignments/${uuid}`).then(res => res.data),
 
   submitAssignment: (uuid: string, data: FormData) =>
     api.post<ApiResponse<AssignmentSubmission>>(`/assignments/${uuid}/submit`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
-    }),
+    }).then(res => res.data),
 
   getSubmission: (uuid: string) =>
-    api.get<ApiResponse<AssignmentSubmission>>(`/assignments/${uuid}/submission`),
+    api.get<ApiResponse<AssignmentSubmission>>(`/assignments/${uuid}/submission`).then(res => res.data),
 };

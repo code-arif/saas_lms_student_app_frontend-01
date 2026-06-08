@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://api.lms.test/api/v1',
+  baseURL: 'https://backend.test/api/v1',
 });
 
 api.interceptors.request.use((config) => {
@@ -23,4 +23,14 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export interface CustomAxiosInstance {
+  get<T = any>(url: string, config?: any): Promise<T>;
+  post<T = any>(url: string, data?: any, config?: any): Promise<T>;
+  put<T = any>(url: string, data?: any, config?: any): Promise<T>;
+  patch<T = any>(url: string, data?: any, config?: any): Promise<T>;
+  delete<T = any>(url: string, config?: any): Promise<T>;
+  interceptors: AxiosInstance['interceptors'];
+  defaults: AxiosInstance['defaults'];
+}
+
+export default api as unknown as CustomAxiosInstance;

@@ -12,7 +12,7 @@ export const useUpdateProfile = () => {
     mutationFn: (data: Partial<User>) => 
       api.patch<ApiResponse<User>>('/profile', data),
     onSuccess: (response) => {
-      setUser(response.data.data);
+      setUser(response.data);
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
   });
@@ -27,7 +27,7 @@ export const useUpdateAvatar = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: (response) => {
-      setUser(response.data.data);
+      setUser(response.data);
     },
   });
 };

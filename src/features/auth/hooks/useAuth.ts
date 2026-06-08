@@ -12,16 +12,16 @@ export const useAuth = () => {
 
   const loginMutation = useMutation({
     mutationFn: authService.login,
-    onSuccess: (response) => {
-      loginStore(response.data.token, response.data.user);
+    onSuccess: (data) => {
+      loginStore(data.token, data.user);
       navigate(ROUTES.DASHBOARD);
     },
   });
 
   const registerMutation = useMutation({
     mutationFn: authService.register,
-    onSuccess: (response) => {
-      loginStore(response.data.token, response.data.user);
+    onSuccess: (data) => {
+      loginStore(data.token, data.user);
       navigate(ROUTES.DASHBOARD);
     },
   });
@@ -30,7 +30,7 @@ export const useAuth = () => {
     mutationFn: authService.logout,
     onSuccess: () => {
       logoutStore();
-      navigate(ROUTES.LOGIN);
+      navigate(ROUTES.AUTH.LOGIN);
     },
   });
 

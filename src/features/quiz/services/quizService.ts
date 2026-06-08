@@ -32,8 +32,8 @@ export interface QuizAttempt {
 
 export const quizService = {
   getQuiz: (uuid: string) =>
-    api.get<ApiResponse<Quiz>>(`/quizzes/${uuid}`),
+    api.get<ApiResponse<Quiz>>(`/quizzes/${uuid}`).then(res => res.data),
 
   submitQuiz: (uuid: string, answers: Record<string, string>) =>
-    api.post<ApiResponse<QuizAttempt>>(`/quizzes/${uuid}/submit`, { answers }),
+    api.post<ApiResponse<QuizAttempt>>(`/quizzes/${uuid}/submit`, { answers }).then(res => res.data),
 };

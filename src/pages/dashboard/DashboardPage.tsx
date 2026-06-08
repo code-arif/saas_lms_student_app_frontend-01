@@ -19,13 +19,13 @@ const DashboardPage = () => {
       />
       
       <DashboardStats 
-        stats={stats?.data} 
+        stats={stats} 
         isLoading={isStatsLoading} 
       />
 
       <div className="grid gap-8 grid-cols-1 lg:grid-cols-3">
         <RecentCourses 
-          courses={recentCourses?.data} 
+          courses={recentCourses} 
           isLoading={isRecentLoading} 
         />
         <ProgressOverview />

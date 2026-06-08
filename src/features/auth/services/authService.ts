@@ -4,15 +4,15 @@ import { ApiResponse } from '../../../types/global.types';
 
 export const authService = {
   login: async (credentials: LoginCredentials) => {
-    return api.post<never, ApiResponse<AuthResponse>>('/auth/login', credentials);
+    return api.post<ApiResponse<AuthResponse>>('/auth/login', credentials).then(res => res.data);
   },
   register: async (credentials: RegisterCredentials) => {
-    return api.post<never, ApiResponse<AuthResponse>>('/auth/register', credentials);
+    return api.post<ApiResponse<AuthResponse>>('/auth/register', credentials).then(res => res.data);
   },
   logout: async () => {
     return api.post('/auth/logout');
   },
   me: async () => {
-    return api.get<never, ApiResponse<import('../../../types/global.types').User>>('/auth/me');
+    return api.get<ApiResponse<import('../../../types/global.types').User>>('/auth/me').then(res => res.data);
   },
 };

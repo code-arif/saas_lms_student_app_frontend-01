@@ -9,7 +9,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 const CourseBrowsePage = () => {
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
-  const { data: coursesResponse, isLoading } = useCourses({ search: debouncedSearch });
+  const { data: courses, isLoading } = useCourses({ search: debouncedSearch });
 
   return (
     <div className="space-y-8">
@@ -29,7 +29,7 @@ const CourseBrowsePage = () => {
       </PageTitle>
 
       <CourseList 
-        courses={coursesResponse?.data.data} 
+        courses={courses} 
         isLoading={isLoading} 
       />
     </div>

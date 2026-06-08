@@ -38,6 +38,7 @@ export interface Course {
   total_duration_seconds: number;
   average_rating: number;
   total_reviews: number;
+  chapters?: any[];
   category?: CourseCategory;
   instructor?: User;
 }

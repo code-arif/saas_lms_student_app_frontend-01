@@ -4,7 +4,7 @@ import { CourseList } from '@/features/courses/components/CourseList';
 import { useMyCourses } from '@/features/courses/hooks/useCourses';
 
 const MyCourses = () => {
-  const { data: coursesResponse, isLoading } = useMyCourses();
+  const { data: courses, isLoading } = useMyCourses();
 
   return (
     <div className="space-y-8">
@@ -14,7 +14,7 @@ const MyCourses = () => {
       />
 
       <CourseList 
-        courses={coursesResponse?.data} 
+        courses={courses} 
         isLoading={isLoading} 
       />
     </div>

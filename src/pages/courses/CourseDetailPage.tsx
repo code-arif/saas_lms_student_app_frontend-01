@@ -8,13 +8,13 @@ import { AlertCircle } from 'lucide-react';
 
 const CourseDetailPage = () => {
   const { uuid } = useParams<{ uuid: string }>();
-  const { data: courseResponse, isLoading, isError } = useCourse(uuid!);
+  const { data: course, isLoading, isError } = useCourse(uuid!);
 
   if (isLoading) {
     return <LoadingSpinner className="h-20 w-20" />;
   }
 
-  if (isError || !courseResponse?.data) {
+  if (isError || !course) {
     return (
       <EmptyState
         title="Course not found"
@@ -26,7 +26,7 @@ const CourseDetailPage = () => {
 
   return (
     <div className="py-8">
-      <CourseDetail course={courseResponse.data} />
+      <CourseDetail course={course} />
     </div>
   );
 };

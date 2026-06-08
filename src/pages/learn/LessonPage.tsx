@@ -17,8 +17,8 @@ const LessonPage = () => {
   const { uuid, lessonUuid } = useParams<{ uuid: string; lessonUuid: string }>();
   const navigate = useNavigate();
   
-  const { data: courseResponse, isLoading: isCourseLoading } = useCourse(uuid!);
-  const { data: lessonResponse, isLoading: isLessonLoading } = useLesson(lessonUuid!);
+  const { data: course, isLoading: isCourseLoading } = useCourse(uuid!);
+  const { data: lesson, isLoading: isLessonLoading } = useLesson(lessonUuid!);
   const { mutate: completeLesson } = useCompleteLesson();
 
   const handleComplete = () => {
@@ -30,9 +30,6 @@ const LessonPage = () => {
   if (isCourseLoading || isLessonLoading) {
     return <LoadingSpinner className="h-20 w-20" />;
   }
-
-  const course = courseResponse?.data;
-  const lesson = lessonResponse?.data;
 
   if (!course || !lesson) return <div>Error loading lesson.</div>;
 

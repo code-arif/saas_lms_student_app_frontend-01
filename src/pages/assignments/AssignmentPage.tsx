@@ -9,13 +9,10 @@ import { FileText, AlertCircle, Calendar } from 'lucide-react';
 const AssignmentPage = () => {
   const { assignmentUuid } = useParams<{ assignmentUuid: string }>();
   
-  const { data: assignmentResponse, isLoading: isAssignmentLoading } = useAssignment(assignmentUuid!);
-  const { data: submissionResponse, isLoading: isSubmissionLoading } = useAssignmentSubmission(assignmentUuid!);
+  const { data: assignment, isLoading: isAssignmentLoading } = useAssignment(assignmentUuid!);
+  const { data: submission, isLoading: isSubmissionLoading } = useAssignmentSubmission(assignmentUuid!);
 
   if (isAssignmentLoading || isSubmissionLoading) return <LoadingSpinner className="h-20 w-20" />;
-
-  const assignment = assignmentResponse?.data;
-  const submission = submissionResponse?.data;
 
   if (!assignment) return <div>Assignment not found.</div>;
 
