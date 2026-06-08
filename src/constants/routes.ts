@@ -12,4 +12,5 @@ export const ROUTES = {
   ASSIGNMENTS: (uuid: string) => `/assignments/${uuid}`,
   CERTIFICATES: '/certificates',
   PROFILE: '/profile',
+  SETTINGS: '/settings',
 };
