@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -13,19 +14,37 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ROUTES } from '@/constants/routes';
-import { LogOut, User, Settings, Bell, Menu } from 'lucide-react';
+import { LogOut, User, Settings, Bell, Menu, PanelLeftClose } from 'lucide-react';
 import { useUIStore } from '@/store/uiStore';
+import { cn } from '@/utils/cn';
 
 export const Header = () => {
   const { user } = useAuthStore();
   const { logout } = useAuth();
-  const { toggleSidebar } = useUIStore();
+  const { toggleSidebar, isSidebarCollapsed, toggleSidebarCollapsed } = useUIStore();
 
   return (
     <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b bg-background px-4 md:px-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
+        {/* Mobile hamburger */}
         <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleSidebar}>
           <Menu className="h-6 w-6" />
+        </Button>
+        {/* Desktop collapse toggle */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hidden md:inline-flex"
+          onClick={toggleSidebarCollapsed}
+          aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-expanded={!isSidebarCollapsed}
+        >
+          <PanelLeftClose
+            className={cn(
+              'h-5 w-5 transition-transform duration-300',
+              isSidebarCollapsed && 'rotate-180'
+            )}
+          />
         </Button>
         <Link to={ROUTES.DASHBOARD} className="flex items-center gap-2 font-bold text-xl">
           <span className="text-primary">SaaS</span>LMS
@@ -47,14 +66,16 @@ export const Header = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user?.name}</p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email}
-                </p>
-              </div>
-            </DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user?.name}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user?.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link to={ROUTES.PROFILE.INDEX} className="flex w-full items-center">

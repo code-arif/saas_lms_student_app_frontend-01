@@ -7,7 +7,7 @@ import { useUIStore } from '@/store/uiStore';
 import { cn } from '@/utils/cn';
 
 export const DashboardLayout = () => {
-  const { isSidebarOpen } = useUIStore();
+  const { isSidebarCollapsed } = useUIStore();
 
   return (
     <div className="min-h-screen bg-background">
@@ -16,8 +16,9 @@ export const DashboardLayout = () => {
         <Sidebar />
         <main
           className={cn(
-            "flex-1 p-6 transition-all duration-300 md:ml-64",
-            !isSidebarOpen && "md:ml-0"
+            "flex-1 p-4 transition-all duration-300 ease-in-out md:p-6",
+            // Desktop: margin adjusts based on sidebar width
+            isSidebarCollapsed ? 'md:ml-16' : 'md:ml-64'
           )}
         >
           <div className="mx-auto max-w-7xl">
