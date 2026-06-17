@@ -1,10 +1,40 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="preload">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>student-app</title>
+    <script>
+      // Flash prevention: read saved theme from localStorage and apply
+      // classes to <html> synchronously BEFORE React hydrates.
+      (function() {
+        try {
+          var data = JSON.parse(localStorage.getItem('ui-storage') || '{}');
+          var state = data.state || {};
+          var theme = state.theme || 'system';
+          var themeColor = state.themeColor || 'blue';
+          var root = document.documentElement;
+
+          if (theme === 'dark') {
+            root.classList.add('dark');
+          } else if (theme === 'light') {
+            root.classList.add('light');
+          } else {
+            // system — follow OS preference
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+              root.classList.add('dark');
+            } else {
+              root.classList.add('light');
+            }
+          }
+
+          root.classList.add('theme-' + themeColor);
+        } catch (e) {
+          // localStorage might be blocked; fall back to defaults (light + blue)
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

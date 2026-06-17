@@ -23,29 +23,46 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
-  
+
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
 
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--accordion-panel-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--accordion-panel-height);
+    }
   }
   @keyframes accordion-up {
-    from { height: var(--accordion-panel-height); }
-    to { height: 0; }
+    from {
+      height: var(--accordion-panel-height);
+    }
+    to {
+      height: 0;
+    }
   }
 }
 
+/*
+ * ── BASE CSS VARIABLES ─────────────────────────────────────────────────
+ * These are overridden by the .dark class and .theme-* classes below.
+ * The @theme block above references these via hsl(var(--variable-name)),
+ * making every Tailwind utility that uses a theme colour reactive to
+ * class changes on <html>.
+ */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Default light mode – Blue primary */
+    --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40.9% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -57,18 +74,22 @@
     --destructive-foreground: 210 40.9% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
   }
 
+  /*
+   * ── DARK MODE ────────────────────────────────────────────────────────
+   * Applied when <html class="dark">.
+   */
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 224 71.4% 4.1%;
     --foreground: 210 40.9% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 224 71.4% 4.1%;
     --card-foreground: 210 40.9% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 40.9% 98%;
-    --primary: 210 40.9% 98%;
+    --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40.9% 98%;
@@ -80,15 +101,130 @@
     --destructive-foreground: 210 40.9% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 224.3 76.3% 48%;
+  }
+
+  /*
+   * ── THEME COLOUR OVERRIDES ──────────────────────────────────────────
+   * Each .theme-* class overrides --primary and --ring only.
+   * Both light and dark variants are provided.
+   *
+   * To add a new theme, just append another block here and add the name
+   * to the ThemeColor type in uiStore.ts.
+   */
+
+  /* ── Blue (default) ───────────────────────────────────────────── */
+  .theme-blue {
+    --primary: 221.2 83.2% 53.3%;
+    --ring: 221.2 83.2% 53.3%;
+  }
+  .dark .theme-blue {
+    --primary: 217.2 91.2% 59.8%;
+    --ring: 224.3 76.3% 48%;
+  }
+
+  /* ── Purple ──────────────────────────────────────────────────── */
+  .theme-purple {
+    --primary: 262.1 83.3% 57.8%;
+    --ring: 262.1 83.3% 57.8%;
+  }
+  .dark .theme-purple {
+    --primary: 263.4 70% 50.4%;
+    --ring: 263.4 70% 50.4%;
+  }
+
+  /* ── Emerald ─────────────────────────────────────────────────── */
+  .theme-emerald {
+    --primary: 142.1 70.6% 45.3%;
+    --ring: 142.1 70.6% 45.3%;
+  }
+  .dark .theme-emerald {
+    --primary: 142.1 70.6% 45.3%;
+    --ring: 142.1 70.6% 45.3%;
+  }
+
+  /* ── Indigo ──────────────────────────────────────────────────── */
+  .theme-indigo {
+    --primary: 238.7 83.5% 66.7%;
+    --ring: 238.7 83.5% 66.7%;
+  }
+  .dark .theme-indigo {
+    --primary: 239 84% 67%;
+    --ring: 239 84% 67%;
+  }
+
+  /* ── Orange ──────────────────────────────────────────────────── */
+  .theme-orange {
+    --primary: 24.6 95% 53.1%;
+    --ring: 24.6 95% 53.1%;
+  }
+  .dark .theme-orange {
+    --primary: 20.5 90.2% 48.2%;
+    --ring: 20.5 90.2% 48.2%;
+  }
+
+  /* ── Rose ────────────────────────────────────────────────────── */
+  .theme-rose {
+    --primary: 346.8 77.2% 49.8%;
+    --ring: 346.8 77.2% 49.8%;
+  }
+  .dark .theme-rose {
+    --primary: 346.8 77.2% 49.8%;
+    --ring: 346.8 77.2% 49.8%;
+  }
+
+  /* ── Teal ────────────────────────────────────────────────────── */
+  .theme-teal {
+    --primary: 173.4 80.4% 40%;
+    --ring: 173.4 80.4% 40%;
+  }
+  .dark .theme-teal {
+    --primary: 173.4 80.4% 40%;
+    --ring: 173.4 80.4% 40%;
   }
 }
 
+/*
+ * ── BASE STYLES ────────────────────────────────────────────────────────
+ */
 @layer base {
   * {
     @apply border-border;
+    /*
+     * Smooth colour transitions for theme changes.
+     * We only transition colours (not layout) to keep perf good.
+     */
+    transition: background-color 200ms ease, color 200ms ease,
+      border-color 200ms ease, box-shadow 200ms ease, outline-color 200ms ease;
   }
+
+  /* Disable transitions during page load to avoid flash */
+  .preload * {
+    transition: none !important;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+/*
+ * ── CUSTOM SCROLLBAR ──────────────────────────────────────────────────
+ */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.3);
 }

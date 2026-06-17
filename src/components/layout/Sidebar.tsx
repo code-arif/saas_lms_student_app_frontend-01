@@ -1,18 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import { cn } from '@/utils/cn';
 import { ROUTES } from '@/constants/routes';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
-  BookOpen,
-  GraduationCap,
   Award,
-  FileText,
   User,
   Search,
   PanelLeftClose,
-  PanelLeftOpen,
   X,
+  GraduationCap,
 } from 'lucide-react';
 import { useUIStore } from '@/store/uiStore';
 import {
@@ -44,9 +42,7 @@ export const Sidebar = () => {
     setMobileSidebarOpen(false);
   }, [location.pathname, setMobileSidebarOpen]);
 
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  // Close mobile sidebar on Escape key (document-level listener)
+  // Close mobile sidebar on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isMobileSidebarOpen) {
@@ -57,12 +53,10 @@ export const Sidebar = () => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isMobileSidebarOpen, setMobileSidebarOpen]);
 
-  // Prevent body scroll & focus close button when mobile sidebar is open
+  // Prevent body scroll when mobile sidebar is open
   useEffect(() => {
     if (isMobileSidebarOpen) {
       document.body.style.overflow = 'hidden';
-      // Focus the close button when drawer opens
-      setTimeout(() => closeButtonRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = '';
     }
@@ -74,111 +68,175 @@ export const Sidebar = () => {
   return (
     <>
       {/* Mobile overlay backdrop */}
-      {isMobileSidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm md:hidden"
-          onClick={() => setMobileSidebarOpen(false)}
-          aria-hidden="true"
-        />
-      )}
+      <AnimatePresence>
+        {isMobileSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm md:hidden"
+            onClick={() => setMobileSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
 
       {/* Sidebar */}
+      {/*
+        Positioning strategy:
+        - Desktop: fixed below the header (top-16), height fills remaining viewport.
+        - Mobile: full-screen overlay (inset-0) sliding from the left.
+        - Always translate-x-0 on desktop so it's always visible.
+        - The collapse button stays inside the sidebar at all times — it is
+          anchored to the sidebar header area and moves with the sidebar.
+      */}
       <aside
-        aria-label="Main navigation"
-        role="navigation"
-        aria-modal={isMobileSidebarOpen ? true : undefined}
         className={cn(
-          // Base styles
-          'fixed left-0 top-16 z-40 flex h-[calc(100vh-4rem)] flex-col border-r bg-background',
-          // Mobile: drawer with slide transition; Desktop: width transition
-          'w-64 transition-all duration-300 ease-in-out md:translate-x-0',
+          // Base: fixed positioning, flex column, background, border
+          // Mobile z-50 stacks above header (z-40); desktop z-30 sits below header
+          'fixed left-0 z-50 flex flex-col border-r bg-card shadow-sm md:z-30',
+          // Mobile: full viewport height overlay
+          'inset-y-0',
+          // Desktop: below sticky header
+          'md:top-16 md:h-[calc(100vh-4rem)]',
+          // Width with smooth transition — only width and transform animate
+          'w-72 transition-[width,transform] duration-300 ease-in-out',
+          isSidebarCollapsed && 'md:w-20',
+          // Mobile drawer slide behavior
           isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full',
-          // Desktop: always visible, width transitions
-          'md:static md:z-auto',
-          isSidebarCollapsed ? 'md:w-16' : 'md:w-64'
+          // Desktop always visible
+          'md:translate-x-0'
         )}
+        role="navigation"
+        aria-label="Main navigation"
+        aria-modal={isMobileSidebarOpen || undefined}
       >
-        {/* Collapse toggle - desktop only */}
-        <div
-          className={cn(
-            'hidden md:flex',
-            isSidebarCollapsed ? 'justify-center py-3' : 'justify-end px-3 py-3'
-          )}
-        >
+        {/* Sidebar Header - always inside sidebar boundaries */}
+        <div className="flex h-16 shrink-0 items-center border-b px-4">
+          {/* Brand - hidden completely when collapsed on desktop */}
+          <Link
+            to={ROUTES.DASHBOARD}
+            className={cn(
+              'flex items-center gap-2 font-bold text-xl whitespace-nowrap overflow-hidden',
+              // Hidden on desktop collapsed, always visible on mobile
+              isSidebarCollapsed 
+                ? 'md:hidden' 
+                : '',
+              // Always visible on mobile when open
+              isMobileSidebarOpen ? 'flex' : ''
+            )}
+          >
+            <span className="text-primary shrink-0">SaaS</span>
+            <span className="shrink-0">LMS</span>
+          </Link>
+
+          {/* Spacer pushes collapse button to the right */}
+          <div className="flex-1" />
+
+          {/* Desktop collapse toggle - always inside sidebar */}
           <Button
             variant="ghost"
             size="icon"
             onClick={toggleSidebarCollapsed}
+            className={cn(
+              'hidden h-8 w-8 shrink-0 text-muted-foreground hover:text-foreground md:inline-flex',
+              // When collapsed, center the button (no brand to compete with)
+              isSidebarCollapsed ? '' : ''
+            )}
             aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             aria-expanded={!isSidebarCollapsed}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
           >
-            {isSidebarCollapsed ? (
-              <PanelLeftOpen className="h-4 w-4" />
-            ) : (
-              <PanelLeftClose className="h-4 w-4" />
-            )}
+            <PanelLeftClose
+              className={cn(
+                'h-4 w-4 transition-transform duration-300',
+                isSidebarCollapsed && 'rotate-180'
+              )}
+            />
           </Button>
-        </div>
 
-        {/* Close button - mobile only */}
-        <div className="flex justify-end px-3 pt-2 md:hidden">
+          {/* Mobile close button */}
           <Button
-            ref={closeButtonRef}
             variant="ghost"
             size="icon"
             onClick={() => setMobileSidebarOpen(false)}
+            className="h-8 w-8 shrink-0 text-muted-foreground md:hidden"
             aria-label="Close sidebar navigation"
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Navigation items */}
-        <div className="flex-1 overflow-y-auto px-2 pb-4">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-6">
           <nav className="space-y-1">
             {navItems.map((item) => {
-              const linkContent = (
+              const isActive = location.pathname === item.href;
+
+              const linkElement = (
                 <NavLink
                   key={item.name}
                   to={item.href}
                   onClick={() => {
-                    // Close mobile sidebar on navigation
-                    setMobileSidebarOpen(false);
+                    if (isMobileSidebarOpen) {
+                      setMobileSidebarOpen(false);
+                    }
                   }}
-                  className={({ isActive }) =>
-                    cn(
-                      'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground',
-                      isSidebarCollapsed ? 'justify-center px-2' : '',
-                      isActive
-                        ? 'bg-accent text-accent-foreground'
-                        : 'text-muted-foreground'
-                    )
-                  }
+                  className={cn(
+                    'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
+                    isActive
+                      ? 'bg-primary/10 text-primary shadow-sm ring-1 ring-primary/20'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+                    isSidebarCollapsed && 'md:justify-center md:px-2'
+                  )}
                 >
-                  <item.icon className="h-5 w-5 shrink-0" />
-                  {!isSidebarCollapsed && <span className="truncate">{item.name}</span>}
+                  <item.icon
+                    className={cn(
+                      'h-5 w-5 shrink-0 transition-colors',
+                      isActive ? 'text-primary' : 'group-hover:text-foreground'
+                    )}
+                  />
+                  {/* Show label unless collapsed on desktop */}
+                  {(!isSidebarCollapsed || isMobileSidebarOpen) && (
+                    <span className="truncate">{item.name}</span>
+                  )}
+
+                  {/* Active indicator */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="active-pill"
+                      className="absolute inset-0 rounded-lg bg-primary/5"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
                 </NavLink>
               );
 
-              // Show tooltip on hover when collapsed (desktop only)
-              if (isSidebarCollapsed) {
+              // Tooltip when collapsed on desktop
+              if (isSidebarCollapsed && !isMobileSidebarOpen) {
                 return (
                   <Tooltip key={item.name}>
-                    <TooltipTrigger asChild>
-                      {linkContent}
-                    </TooltipTrigger>
-                    <TooltipContent side="right" sideOffset={8}>
+                    <TooltipTrigger asChild>{linkElement}</TooltipTrigger>
+                    <TooltipContent side="right" sideOffset={12}>
                       {item.name}
                     </TooltipContent>
                   </Tooltip>
                 );
               }
 
-              return linkContent;
+              return linkElement;
             })}
           </nav>
+        </div>
+
+        {/* Sidebar footer - branding/version */}
+        <div
+          className={cn(
+            'border-t px-4 py-3 text-xs text-muted-foreground shrink-0',
+            isSidebarCollapsed && 'md:hidden'
+          )}
+        >
+          <p>LMS v1.0</p>
         </div>
       </aside>
     </>
