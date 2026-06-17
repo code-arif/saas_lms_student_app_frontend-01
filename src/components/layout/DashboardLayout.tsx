@@ -26,7 +26,7 @@ export const DashboardLayout = () => {
             'ml-0'
           )}
         >
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto">
             <Outlet />
           </div>
           <Footer />

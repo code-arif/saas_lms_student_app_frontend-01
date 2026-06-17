@@ -4,7 +4,7 @@ import { ApiResponse } from '../../../types/global.types';
 
 export const authService = {
   login: async (credentials: LoginCredentials) => {
-    return api.post<ApiResponse<AuthResponse>>('/auth/login', credentials).then(res => res.data);
+    return api.post<ApiResponse<AuthResponse>>('/auth/student/login', credentials).then(res => res.data);
   },
   register: async (credentials: RegisterCredentials) => {
     return api.post<ApiResponse<AuthResponse>>('/auth/student/register', credentials).then(res => res.data);
