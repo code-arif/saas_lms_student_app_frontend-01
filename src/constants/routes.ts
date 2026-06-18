@@ -22,5 +22,10 @@ export const ROUTES = {
   PROFILE: {
     INDEX: '/profile',
   },
-  SETTINGS: '/settings',
+  SETTINGS: {
+    INDEX: '/settings',
+    GENERAL: '/settings/general',
+    SECURITY: '/settings/security',
+    NOTIFICATIONS: '/settings/notifications',
+  },
 };

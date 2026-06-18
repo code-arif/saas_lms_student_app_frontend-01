@@ -22,7 +22,9 @@ const LessonPage = lazy(() => import('@/pages/learn/LessonPage'));
 const QuizPage = lazy(() => import('@/pages/quiz/QuizPage'));
 const AssignmentPage = lazy(() => import('@/pages/assignments/AssignmentPage'));
 const CertificatesPage = lazy(() => import('@/pages/certificates/CertificatesPage'));
-const ProfilePage = lazy(() => import('@/pages/profile/ProfilePage'));
+const GeneralSettingsPage = lazy(() => import('@/pages/settings/GeneralSettingsPage'));
+const SecuritySettingsPage = lazy(() => import('@/pages/settings/SecuritySettingsPage'));
+const NotificationSettingsPage = lazy(() => import('@/pages/settings/NotificationSettingsPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
 export const router = createBrowserRouter([
@@ -57,7 +59,10 @@ export const router = createBrowserRouter([
               { path: ROUTES.COURSES.INDEX, element: <Suspense fallback={<LoadingSpinner />}><CourseBrowsePage /></Suspense> },
               { path: ROUTES.COURSES.DETAILS, element: <Suspense fallback={<LoadingSpinner />}><CourseDetailPage /></Suspense> },
               { path: ROUTES.CERTIFICATES, element: <Suspense fallback={<LoadingSpinner />}><CertificatesPage /></Suspense> },
-              { path: ROUTES.PROFILE.INDEX, element: <Suspense fallback={<LoadingSpinner />}><ProfilePage /></Suspense> },
+              { path: ROUTES.PROFILE.INDEX, element: <Navigate to={ROUTES.SETTINGS.GENERAL} replace /> },
+              { path: ROUTES.SETTINGS.GENERAL, element: <Suspense fallback={<LoadingSpinner />}><GeneralSettingsPage /></Suspense> },
+              { path: ROUTES.SETTINGS.SECURITY, element: <Suspense fallback={<LoadingSpinner />}><SecuritySettingsPage /></Suspense> },
+              { path: ROUTES.SETTINGS.NOTIFICATIONS, element: <Suspense fallback={<LoadingSpinner />}><NotificationSettingsPage /></Suspense> },
               { path: ROUTES.LEARN.LESSON, element: <Suspense fallback={<LoadingSpinner />}><LessonPage /></Suspense> },
               { path: ROUTES.LEARN.QUIZ, element: <Suspense fallback={<LoadingSpinner />}><QuizPage /></Suspense> },
               { path: ROUTES.LEARN.ASSIGNMENT, element: <Suspense fallback={<LoadingSpinner />}><AssignmentPage /></Suspense> },

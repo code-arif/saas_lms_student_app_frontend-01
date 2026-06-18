@@ -18,6 +18,13 @@ export const useUpdateProfile = () => {
   });
 };
 
+export const useUpdateNotificationPreferences = () => {
+  return useMutation({
+    mutationFn: (data: Record<string, boolean>) =>
+      api.put<ApiResponse<{ message: string }>>('/profile/notification-preferences', data),
+  });
+};
+
 export const useUpdateAvatar = () => {
   const setUser = useAuthStore((state) => state.setUser);
 
