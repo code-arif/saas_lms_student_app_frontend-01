@@ -290,7 +290,7 @@ export const Sidebar = () => {
                       transition={{ duration: 0.2, ease: 'easeInOut' }}
                       className="overflow-hidden"
                     >
-                      <div className="ml-2 mt-1 space-y-1 border-l-2 border-muted pl-2">
+                      <div className="ml-2 mt-1 space-y-1 pl-2">
                         {settingsItems.map((item) =>
                           renderNavLink(item, 'pl-3')
                         )}

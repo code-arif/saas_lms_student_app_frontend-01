@@ -47,7 +47,7 @@ export const ProfileForm = () => {
   };
 
   return (
-    <Card>
+    <Card className="ring-0">
       <CardHeader>
         <CardTitle>Personal Information</CardTitle>
       </CardHeader>
