@@ -22,6 +22,7 @@ export const ROUTES = {
   PROFILE: {
     INDEX: '/profile',
   },
+  TRANSACTIONS: '/transactions',
   SETTINGS: {
     INDEX: '/settings',
     GENERAL: '/settings/general',

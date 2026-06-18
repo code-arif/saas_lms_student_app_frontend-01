@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ROUTES } from '@/constants/routes';
-import { LogOut, User, Settings, Bell, Menu, Search as SearchIcon, CheckCheck, ExternalLink, ChevronDown } from 'lucide-react';
+import { LogOut, User, Settings, Bell, Menu, Search as SearchIcon, CheckCheck, ExternalLink, ChevronDown, Receipt } from 'lucide-react';
 import { useUIStore } from '@/store/uiStore';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { Input } from '@/components/ui/input';
@@ -419,6 +419,16 @@ export const Header = () => {
                   >
                     <Settings className="h-4 w-4" />
                     <span>Settings</span>
+                  </Link>
+
+                  {/* Transaction History button */}
+                  <Link
+                    to={ROUTES.TRANSACTIONS}
+                    onClick={() => setProfileMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Receipt className="h-4 w-4" />
+                    <span>Transaction History</span>
                   </Link>
 
                   <Separator className="my-1" />
